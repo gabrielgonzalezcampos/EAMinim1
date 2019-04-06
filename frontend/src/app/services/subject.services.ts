@@ -20,4 +20,8 @@ export class SubjectServices {
   obtainSubject(subjectId) {
     return this.http.get(this.environment.urlUser + "sub/"+subjectId, {observe: 'response'})
   }
+
+  addSubject(subject) {
+    return this.http.post(this.environment.urlUser + "sub/",subject, {observe: 'response'})
+  }
 }

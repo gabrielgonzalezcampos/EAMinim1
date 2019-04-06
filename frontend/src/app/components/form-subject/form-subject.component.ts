@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {Student} from "../../models/student"
-import { StudentServices } from "../../services/student.services";
+import {Subject} from "../../models/subject"
+import {SubjectServices } from "../../services/subject.services";
 import {DataService} from "../../services/data.services";
+import {Student} from "../../models/student";
 
 @Component({
   selector: 'app-form-subject',
@@ -21,15 +22,26 @@ export class FormSubjectComponent implements OnInit {
 
   //Com a constructor, pasem els Services (on estaran implementades les funcions), el servei de Dades (per passar dades entre components),
   // el Router i el constructor de Form, formBuilder
-  constructor(private router: Router,private studentService: StudentServices, private dataService:DataService,private formBuilder: FormBuilder) {
+  constructor(private router: Router,private subjectServices: SubjectServices, private dataService:DataService,private formBuilder: FormBuilder) {
     this.Form = this.formBuilder.group({
         //Posem els diferents camps indicant si son requerits (Validators.required), i el patro
         name: new FormControl('', Validators.compose([
           Validators.required,
           Validators.pattern(/.{0,15}$/)])),
+        nameStu: new FormControl('', Validators.compose([
+          Validators.required,
+          Validators.pattern(/.{0,15}$/)])),
+
+        address: new FormControl('', Validators.compose([
+          Validators.pattern(/.{0,100}$/)])),
+
+        phones: new FormControl('', Validators.compose([
+          Validators.pattern(/.{0,100}$/)])),
+
+        description: new FormControl('', Validators.compose([
+          Validators.pattern(/.{0,100}$/)])),
+
       }
-
-
     )
   }
 
@@ -39,14 +51,29 @@ export class FormSubjectComponent implements OnInit {
       //Per cada camp, podem possar un missatge de requeriment, de patro i d'error.
       'name': [
         { type: 'required', message: 'Nombre de la Asignatura: Requerido'},
-        { type: 'pattern', message: 'Nombre de la Asignatura: Debe contener 15 carácteres como máximo' }
+        { type: 'pattern', message: 'Nombre de la Asignatura: Debe contener 15 carácteres como máximo' },
+        { type: 'error', message: 'Error: Ya existe una asignatura con este nombre'}
+      ],
+      'nameStu': [
+        { type: 'required', message: 'Nombre de Usuario: Requerido'},
+        { type: 'pattern', message: 'Nombre de Usuario: Debe contener 15 carácteres como máximo' }
+      ],
+      'address': [
+        { type: 'pattern', message: 'Dirección: Debe contener 100 carácteres como máximo' }
+      ],
+      'phones': [
+        { type: 'pattern', message: 'Teléfonos:: Debe contener 100 carácteres como máximo' },
+        { type: 'error', message: 'Teléfonos: Deben ir separados por comas'}
+      ],
+      'description': [
+        { type: 'pattern', message: 'Descripcción: Debe contener 100 carácteres como máximo' },
+        { type: 'error', message: 'Descripcción: Deben ir separados por comas'}
       ],
     }
   }
 
   peticioForm() {
     console.log("Operació d'afagir una asignatura realitzada al BackEnd:" + this.Form.value);
-    //Creem el objecte que passarem a la petició, important fer-ho en el ordre del constructor
     var telf = this.Form.value.phones.split(",");
     var descr = this.Form.value.description.split(",");
     var phones = []//=[{name: String, address: {type: String}}]//:[{name: String, address: {type: String}}]
@@ -55,9 +82,9 @@ export class FormSubjectComponent implements OnInit {
     }
 
     //Faltaria passar tots els telefons, pero no em deixa per phones :(
-    let student = new Student(this.Form.value.name, this.Form.value.address, phones[0])
-
-    this.studentService.addStudent(this.subjectId, student)
+    let student = new Student(this.Form.value.nameStu, this.Form.value.address, phones[0])
+    let subject = new Subject(this.Form.value.name,[student])
+    this.subjectServices.addSubject(subject)
       .subscribe(response => {
           console.log("Resposta del BackEnd" + response);
           //Podem filtrar per tots els codis 2XX
@@ -72,8 +99,8 @@ export class FormSubjectComponent implements OnInit {
         err => {
           console.log("Error del BackEnd" + err);
           //Podem filtrar per tots els altres codis
-          if (err.status == 409) {
-            console.log("409");
+          if (err.status == 403) {
+            console.log("403");
             //Podem activar l'error d'un dels camps
             this.Form.get("name").setErrors({
               error: true

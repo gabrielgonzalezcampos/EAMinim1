@@ -21,8 +21,9 @@
       <p></p>
       <p></p>
       <!--Si la variable llista es diferent a Null, mostrem els titols de les columnes-->
-      <pre *ngIf="subject" class="list_titles">Nombre    Dirección</pre>
-      <ul *ngIf="subject" id="menu">
+      <pre *ngIf="subject.students" class="list_titles">Nombre    Dirección</pre>
+      <pre *ngIf="subject.students==null" class="list_titles">No hay alumnos en esta asignatura</pre>
+      <ul *ngIf="subject.students" id="menu">
         <!--Per cada element de la llista fem:-->
         <li  class="list_items" *ngFor="let student of subject.students">
           <!--Mostrem el nom per cada element-->
