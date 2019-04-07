@@ -141,11 +141,30 @@ function addStudent (req,res){
 
 }
 
+function getSubjectStudents (req,res){
+    console.log('GET /api/subject/students/:subjectId')
+
+    let subjectId = req.params.subjectId
+
+    Subject.findById(subjectId,(err, subject) => {
+        if(err)
+            return res.status(500).send({message: `Error searching the subject: ${err}`})
+
+        if(!subject)
+            return res.status(404).send({message: `Subject does not exist`})
+
+        Student.find({'_id': { $in: subject.students}}, function(err, studentsList){
+            res.status(200).send({students: studentsList})
+        })
+    })
+}
+
 module.exports={
     getSubjects,
     getSubject,
     saveSubject,
     updateSubject,
     deleteSubject,
-    addStudent
+    addStudent,
+    getSubjectStudents
 }

@@ -12,6 +12,6 @@ apiSubjects.put('/:subjectId', subjectCtrl.updateSubject)
 apiSubjects.delete('/:subjectId', subjectCtrl.deleteSubject)
 apiSubjects.post('/addStudent', subjectCtrl.addStudent)
 
-//apiSubjects.get('/students/:subjectId', subjectCtrl.getSubjectStudents)
+apiSubjects.get('/students/:subjectId', subjectCtrl.getSubjectStudents)
 
 module.exports =  apiSubjects
