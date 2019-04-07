@@ -3,11 +3,11 @@ import {Student} from "./student";
 export class Subject {
   _id: string;
   name: string;
-  students:[Student]
+  students:[string]
 
-  constructor(name: string, students: [Student]) {
+  constructor(name: string/*, students: [string]*/) {
     this.name = name;
-    this.students = students;
+    //this.students = students;
   }
-
 }
+

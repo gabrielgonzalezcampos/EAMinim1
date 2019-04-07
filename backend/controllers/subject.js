@@ -1,6 +1,7 @@
 'use strict'
 
 const Subject = require('../models/subject')
+const Student = require('../models/student')
 
 function getSubjects(req,res){
     //Funcio per obtindre el nom de totes les assignature
@@ -38,7 +39,46 @@ function getSubject(req,res){
 
 }
 
-function addSubject(req,res){
+function updateSubject (req,res){
+    console.log('PUT /api/subject/:subjectId')
+
+    let subjectId = req.params.subjectId
+    let update = req.body
+
+    Subject.findByIdAndUpdate(subjectId,update,(err, subjectUpdated) => {
+        if(err)
+            return res.status(500).send({message: `Error updating the subject: ${err}`})
+
+        if(!subjectUpdated)
+            return res.status(404).send({message: `Subject does not exist`})
+
+        res.status(200).send({subject: subjectUpdated})
+    })
+}
+
+function deleteSubject (req,res){
+    console.log('DELETE /api/subject/:subjectId')
+
+    let subjectId = req.params.subjectId
+
+    Subject.findById(subjectId,(err, subject) => {
+        if(err)
+            return res.status(500).send({message: `Error deleting the subject: ${err}`})
+
+        if(!subject)
+            return res.status(404).send({message: `Subject does not exist`})
+
+        subject.remove(err =>{
+            if(err)
+                return res.status(500).send({message: `Error deleting the subject: ${err}`})
+
+            res.status(200).send({message: "Subject deleted correctly"})
+        })
+    })
+}
+
+
+function saveSubject(req,res){
     //Funció per afagir una assignatura
     const subjectNew = new Subject({
         name: req.body.name,
@@ -66,27 +106,37 @@ function addSubject(req,res){
 
 }
 
-function addSampleSubject(req,res){
-    //Funcio per afagir una assignatura de mostra
-    var subjectNew = new Subject({name: "IOT",students:{name: "Carla",address:"Rue del Percebe",
-            phones:[{name: "Casa", address: "838020"},{name: "Mobil", address: "323020"}]}
-    })
-    console.log("Petició d'afagir asignatures mostra")
-    Subject.find(subjectNew).lean().exec(function(err, subj) {
-        if(err){
-            return res.status(500).send({message: `Error al añadir la asignatura: ${err}`})}
-        if (!subj.length){
-            subjectNew.save((err) => {
-                if(err) {
-                    return res.status(403).send({message: `Error al añadir la asignatura: ${err}`})
-                }
-                console.log("Assignatura: "+req.body.name+" agregada correctament")
-                return res.status(200).send({message: subjectNew})
-            } )     }
-        else {
-            console.log("Error al afagir l'assignatura "+req.body.name+". Ja existeix una assignatura amb aquest nom")
-            return res.status(403).send({message: `Error al añadir la asignatura: ${err}`})
-        }
+
+function addStudent (req,res){
+    console.log('POST /api/student/phone')
+
+    let studentId = req.body.studentId
+    let subjectId = req.body.subjectId
+
+    Subject.findById(subjectId,(err, subject) => {
+        if(err)
+            return res.status(500).send({message: `Error searching the subject: ${err}`})
+
+        if(!subject)
+            return res.status(404).send({message: `Subject does not exist`})
+
+        Student.findById(studentId,(err,student)=>{
+            if(err)
+                return res.status(500).send({message: `Error searching the student: ${err}`})
+
+            if(!student)
+                return res.status(404).send({message: `Student does not exist`})
+
+            subject.students.push(studentId)
+            subject.save((err,subjectStored) => {
+                if(err)
+                    return res.status(500).send({message: `Error saving in the DB: ${err}`})
+
+                res.status(200).send({subject: subjectStored})
+
+            })
+        })
+
     })
 
 }
@@ -94,6 +144,8 @@ function addSampleSubject(req,res){
 module.exports={
     getSubjects,
     getSubject,
-    addSubject,
-    addSampleSubject
+    saveSubject,
+    updateSubject,
+    deleteSubject,
+    addStudent
 }

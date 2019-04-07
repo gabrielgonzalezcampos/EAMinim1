@@ -28,18 +28,6 @@ export class FormSubjectComponent implements OnInit {
         name: new FormControl('', Validators.compose([
           Validators.required,
           Validators.pattern(/.{0,15}$/)])),
-        nameStu: new FormControl('', Validators.compose([
-          Validators.required,
-          Validators.pattern(/.{0,15}$/)])),
-
-        address: new FormControl('', Validators.compose([
-          Validators.pattern(/.{0,100}$/)])),
-
-        phones: new FormControl('', Validators.compose([
-          Validators.pattern(/.{0,100}$/)])),
-
-        description: new FormControl('', Validators.compose([
-          Validators.pattern(/.{0,100}$/)])),
 
       }
     )
@@ -54,36 +42,19 @@ export class FormSubjectComponent implements OnInit {
         { type: 'pattern', message: 'Nombre de la Asignatura: Debe contener 15 carácteres como máximo' },
         { type: 'error', message: 'Error: Ya existe una asignatura con este nombre'}
       ],
-      'nameStu': [
-        { type: 'required', message: 'Nombre de Usuario: Requerido'},
-        { type: 'pattern', message: 'Nombre de Usuario: Debe contener 15 carácteres como máximo' }
-      ],
-      'address': [
-        { type: 'pattern', message: 'Dirección: Debe contener 100 carácteres como máximo' }
-      ],
-      'phones': [
-        { type: 'pattern', message: 'Teléfonos:: Debe contener 100 carácteres como máximo' },
-        { type: 'error', message: 'Teléfonos: Deben ir separados por comas'}
-      ],
-      'description': [
-        { type: 'pattern', message: 'Descripcción: Debe contener 100 carácteres como máximo' },
-        { type: 'error', message: 'Descripcción: Deben ir separados por comas'}
-      ],
     }
   }
 
   peticioForm() {
     console.log("Operació d'afagir una asignatura realitzada al BackEnd:" + this.Form.value);
-    var telf = this.Form.value.phones.split(",");
-    var descr = this.Form.value.description.split(",");
-    var phones = []//=[{name: String, address: {type: String}}]//:[{name: String, address: {type: String}}]
+    /*var phones = []//=[{name: String, address: {type: String}}]//:[{name: String, address: {type: String}}]
     for (let i = 0; i < telf.length; i++) {
       phones[i] = [{name: descr[i], address: telf[i]}]
     }
+    */
 
-    //Faltaria passar tots els telefons, pero no em deixa per phones :(
-    let student = new Student(this.Form.value.nameStu, this.Form.value.address, phones[0])
-    let subject = new Subject(this.Form.value.name,[student])
+
+    let subject = new Subject(this.Form.value.name,)
     this.subjectServices.addSubject(subject)
       .subscribe(response => {
           console.log("Resposta del BackEnd" + response);

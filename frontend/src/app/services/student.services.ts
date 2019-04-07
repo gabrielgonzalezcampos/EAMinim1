@@ -14,9 +14,9 @@ export class StudentServices {
   }
 
   obtainStudent(studentId) {
-    return this.http.get(this.environment.urlUser + "stu/"+studentId, {observe: 'response'})
+    return this.http.get(this.environment.urlStudent + "/"+studentId, {observe: 'response'})
   }
   addStudent(subjectId, Student) {
-    return this.http.post(this.environment.urlUser + "stu/"+subjectId,Student, {observe: 'response'})
+    return this.http.post(this.environment.urlStudent + "/"+subjectId,Student, {observe: 'response'})
   }
 }

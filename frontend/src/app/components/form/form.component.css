@@ -184,7 +184,7 @@ iframe {
 }
 
 .wrap-login100 {
-  width: 500px;
+  width: 1000px;
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
@@ -205,6 +205,7 @@ iframe {
   color: #333333;
   line-height: 1.2;
   text-align: center;
+  width: 100%;
 }
 
 
@@ -318,7 +319,7 @@ iframe {
 }
 
 .wrap-login100-form-btn {
-  width: 100%;
+  width: 50%;
   display: block;
   position: relative;
   z-index: 1;
@@ -339,10 +340,10 @@ iframe {
   width: 300%;
   height: 100%;
   background: #a64bf4;
-  background: -webkit-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
-  background: -o-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
-  background: -moz-linear-gradient(right, #00dbde, #fc00ff, #00dbde, #fc00ff);
-  background: linear-gradient(to left, #00dbde, #fc00ff, #00dbde, #fc00ff);
+  background: -webkit-linear-gradient(right, #00a3de, #00033a, #00a3de, #00033a);
+  background: -o-linear-gradient(right, #00a3de, #00033a, #00a3de, #00033a);
+  background: -moz-linear-gradient(right, #00a3de, #00033a, #00a3de, #00033a);
+  background: linear-gradient(to left, #00a3de, #00033a, #00a3de, #00033a);
   top: 0;
   left: -100%;
 
@@ -481,4 +482,41 @@ iframe {
     padding-left: 15px;
     padding-right: 15px;
   }
+}
+/*//////////////////////////////////////////////////////////////////
+[ List ]*/
+li {
+  display:inline;
+  padding: 10px 30px;
+}
+.list_titles {
+}
+.list_items {
+  word-spacing: 30px;
+  font-family: Poppins-Regular;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
+}
+.list_btn1 {
+  background-color: rgb(0, 3, 58); /* Blue background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 12px 16px; /* Some padding */
+  font-size: 16px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+}
+.list_btn2 {
+  background-color: rgb(0, 3, 58); /* Blue background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 12px 16px; /* Some padding */
+  font-size: 16px; /* Set a font size */
+  cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: #00033a;
 }
